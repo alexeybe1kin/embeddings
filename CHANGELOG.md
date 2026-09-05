@@ -4,6 +4,11 @@ Versions are the module's own. A change to the request or response shape of
 `/embed`, `/model` or `/health` is a contract change and gets its own entry —
 replacing a module has to be a decision with visible consequences.
 
+## 0.1.1
+
+Publish workflow only: attestation is skipped while the repository is private,
+so a successful image push is no longer reported as a failure.
+
 ## 0.1.0
 
 First release.
