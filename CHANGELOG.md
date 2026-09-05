@@ -1,0 +1,21 @@
+# Changelog
+
+Versions are the module's own. A change to the request or response shape of
+`/embed`, `/model` or `/health` is a contract change and gets its own entry —
+replacing a module has to be a decision with visible consequences.
+
+## 0.1.0
+
+First release.
+
+- `POST /embed` — text to vectors, up to 256 per call. Refuses to return a
+  vector whose width does not match the declared dimension, and refuses an
+  incomplete batch. Answers `503` when the backend is unavailable, so the
+  caller degrades to lexical retrieval rather than treating it as its own bug.
+- `GET /model` — model identity and dimension. Part of the swap contract:
+  changing either invalidates every stored vector.
+- `GET /health` — module contract shape. Probes backend reachability and model
+  presence as separate checks, because they need different fixes.
+- Refuses to start without an admin key of at least 16 characters.
+- Default model `qwen3-embedding:0.6b` (1024 dimensions, multilingual);
+  `embeddinggemma:300m` (768) as the low-resource preset.

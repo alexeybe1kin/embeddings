@@ -1,0 +1,39 @@
+name: embeddings
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: embeddings-ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - conker_net
+
+  embeddings:
+    build: .
+    container_name: embeddings-api
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      EMBEDDINGS_OLLAMA_URL: http://ollama:11434
+    ports:
+      # Loopback only. Nothing here is meant to be reachable from outside the
+      # host; MemoryGate calls it over the private compose network.
+      - "127.0.0.1:8030:8030"
+    depends_on:
+      - ollama
+    networks:
+      conker_net:
+        aliases:
+          - embeddings-api
+
+volumes:
+  ollama_data:
+
+networks:
+  conker_net:
+    external: true
+    name: conker_net
