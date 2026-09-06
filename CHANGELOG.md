@@ -4,6 +4,16 @@ Versions are the module's own. A change to the request or response shape of
 `/embed`, `/model` or `/health` is a contract change and gets its own entry —
 replacing a module has to be a decision with visible consequences.
 
+## 0.1.2
+
+- **`/health` reported `0.1.0` while the module shipped as v0.1.1.** The
+  constant was not moved at release, so the service reported a version that
+  had not been running for a while.
+- **`.dockerignore`, and a CI job that builds the image and searches it for
+  secrets.** This build context was already clean; ToolGate's was not, and
+  shipped a real `.env` to the registry. Every module gets the check, not just
+  the one that was caught.
+
 ## 0.1.1
 
 Publish workflow only: attestation is skipped while the repository is private,
